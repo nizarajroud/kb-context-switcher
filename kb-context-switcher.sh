@@ -36,12 +36,25 @@ create_project() {
         return
     fi
     
+    AUDIO_BUCKET="${S3_BUCKET}-audio"
+
     # Create S3 bucket if needed
     if ! aws s3 ls "s3://${S3_BUCKET}" --region ${REGION} --profile ${PROFILE} 2>/dev/null; then
         echo "Creating S3 bucket: ${S3_BUCKET}"
         aws s3 mb "s3://${S3_BUCKET}" --region ${REGION} --profile ${PROFILE}
         aws s3api put-bucket-versioning \
             --bucket ${S3_BUCKET} \
+            --versioning-configuration Status=Enabled \
+            --region ${REGION} \
+            --profile ${PROFILE}
+    fi
+
+    # Create audio S3 bucket if needed
+    if ! aws s3 ls "s3://${AUDIO_BUCKET}" --region ${REGION} --profile ${PROFILE} 2>/dev/null; then
+        echo "Creating audio S3 bucket: ${AUDIO_BUCKET}"
+        aws s3 mb "s3://${AUDIO_BUCKET}" --region ${REGION} --profile ${PROFILE}
+        aws s3api put-bucket-versioning \
+            --bucket ${AUDIO_BUCKET} \
             --versioning-configuration Status=Enabled \
             --region ${REGION} \
             --profile ${PROFILE}
