@@ -193,14 +193,7 @@ EOF
     {
       "Id": "${S3_BUCKET}-sync-trigger",
       "LambdaFunctionArn": "${SYNC_LAMBDA_ARN}",
-      "Events": ["s3:ObjectCreated:*"],
-      "Filter": {
-        "Key": {
-          "FilterRules": [
-            {"Name": "Suffix", "Value": ".txt"}
-          ]
-        }
-      }
+      "Events": ["s3:ObjectCreated:*"]
     }
   ]
 }
@@ -289,14 +282,7 @@ switch_project() {
     {
       "Id": "${S3_BUCKET}-sync-trigger",
       "LambdaFunctionArn": "${SYNC_LAMBDA_ARN}",
-      "Events": ["s3:ObjectCreated:*"],
-      "Filter": {
-        "Key": {
-          "FilterRules": [
-            {"Name": "Suffix", "Value": ".txt"}
-          ]
-        }
-      }
+      "Events": ["s3:ObjectCreated:*"]
     }
   ]
 }
