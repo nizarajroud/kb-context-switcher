@@ -28,15 +28,15 @@ list_projects() {
 
 create_project() {
     read -p "Project name: " PROJECT_NAME
-    read -p "S3 bucket name: " S3_BUCKET
-    read -p "Create audio S3 bucket? (y/n): " CREATE_AUDIO
-    
-    if [ -z "$PROJECT_NAME" ] || [ -z "$S3_BUCKET" ]; then
-        echo "Error: Both fields required"
+
+    if [ -z "$PROJECT_NAME" ]; then
+        echo "Error: Project name required"
         return
     fi
-    
-    AUDIO_BUCKET="${S3_BUCKET}-audio"
+
+    RAND=$RANDOM
+    S3_BUCKET="${PROJECT_NAME}-${RAND}"
+    AUDIO_BUCKET="${PROJECT_NAME}-audio-${RAND}"
 
     # Create S3 bucket if needed
     if ! aws s3 ls "s3://${S3_BUCKET}" --region ${REGION} --profile ${PROFILE} 2>/dev/null; then
