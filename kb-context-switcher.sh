@@ -47,6 +47,11 @@ create_project() {
             --versioning-configuration Status=Enabled \
             --region ${REGION} \
             --profile ${PROFILE}
+        aws s3api put-bucket-policy \
+            --bucket ${S3_BUCKET} \
+            --policy "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"BedrockKBAccess\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"${KB_ROLE_ARN}\"},\"Action\":[\"s3:ListBucket\",\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::${S3_BUCKET}\",\"arn:aws:s3:::${S3_BUCKET}/*\"]}]}" \
+            --region ${REGION} \
+            --profile ${PROFILE}
     fi
 
     # Create audio S3 bucket if needed
