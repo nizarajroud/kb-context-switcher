@@ -79,7 +79,8 @@ create_project() {
         fi
         
         # Ask to reconfigure Lambda
-        read -p "Configure Lambda and S3 trigger for this project? (y/n): " RECONFIG_LAMBDA
+        read -p "Configure Lambda and S3 trigger for this project? (Y/n): " RECONFIG_LAMBDA
+        RECONFIG_LAMBDA="${RECONFIG_LAMBDA:-Y}"
         if [[ "$RECONFIG_LAMBDA" =~ ^[Yy]$ ]]; then
             if [ -z "$TRANSCRIBE_LAMBDA_NAME" ]; then
                 echo "Error: TRANSCRIBE_LAMBDA_NAME not set in .env"
@@ -163,7 +164,8 @@ EOF
     
     # Configure kb-sync Lambda for auto-sync
     if [ -n "$KB_SYNC_LAMBDA_NAME" ]; then
-        read -p "Configure auto-sync for this project? (y/n): " CONFIG_SYNC
+        read -p "Configure auto-sync for this project? (Y/n): " CONFIG_SYNC
+        CONFIG_SYNC="${CONFIG_SYNC:-Y}"
         if [[ "$CONFIG_SYNC" =~ ^[Yy]$ ]]; then
             # Update kb-sync Lambda environment
             aws lambda update-function-configuration \
@@ -258,7 +260,8 @@ switch_project() {
     
     # Configure kb-sync Lambda for auto-sync
     if [ -n "$KB_SYNC_LAMBDA_NAME" ]; then
-        read -p "Configure auto-sync for this project? (y/n): " CONFIG_SYNC
+        read -p "Configure auto-sync for this project? (Y/n): " CONFIG_SYNC
+        CONFIG_SYNC="${CONFIG_SYNC:-Y}"
         if [[ "$CONFIG_SYNC" =~ ^[Yy]$ ]]; then
             # Update kb-sync Lambda environment
             aws lambda update-function-configuration \
@@ -323,7 +326,8 @@ EOF
     # Check if audio bucket exists and update Lambda
     AUDIO_BUCKET="audio-${S3_BUCKET}"
     if aws s3 ls "s3://${AUDIO_BUCKET}" --region ${REGION} --profile ${PROFILE} 2>/dev/null; then
-        read -p "Update Lambda and S3 trigger for this project? (y/n): " UPDATE_LAMBDA
+        read -p "Update Lambda and S3 trigger for this project? (Y/n): " UPDATE_LAMBDA
+        UPDATE_LAMBDA="${UPDATE_LAMBDA:-Y}"
         if [[ "$UPDATE_LAMBDA" =~ ^[Yy]$ ]]; then
             if [ -z "$TRANSCRIBE_LAMBDA_NAME" ]; then
                 echo "Error: TRANSCRIBE_LAMBDA_NAME not set in .env"
